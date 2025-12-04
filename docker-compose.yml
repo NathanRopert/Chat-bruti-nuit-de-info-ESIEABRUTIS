@@ -1,0 +1,37 @@
+services:
+  chat-bruti:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=gemma3:270m
+      - FLASK_ENV=production
+      - FLASK_HOST=0.0.0.0
+      - FLASK_PORT=5000
+    depends_on:
+      - ollama
+    volumes:
+      - ./templates:/app/templates
+      - ./static:/app/static
+    restart: unless-stopped
+    networks:
+      - chat-bruti-network
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - chat-bruti-network
+
+volumes:
+  ollama_data:
+
+networks:
+  chat-bruti-network:
+    driver: bridge
+

@@ -5,7 +5,6 @@ $(document).ready(function () {
     let clickCount = 0;
     let easterEggsFound = [];
     let isDarkTheme = true;
-    let isPhilosopherMode = false;
     
     // Statistiques
     let stats = {
@@ -103,7 +102,6 @@ $(document).ready(function () {
         $('#attach-btn').click(handleAttachClick);
         $('#theme-btn').click(toggleTheme);
         $('#settings-btn').click(() => $('#settings-modal').addClass('active'));
-        $('#philosopher-mode-btn').click(togglePhilosopherMode);
         $('#stats-btn').click(() => $('#stats-sidebar').toggleClass('open'));
         $('#close-stats').click(() => $('#stats-sidebar').removeClass('open'));
         $('#save-settings').click(saveSettings);
@@ -183,6 +181,9 @@ $(document).ready(function () {
         const message = $('#user-input').val().trim();
         if (message === '') return;
         
+        // Effets amusants sur l'envoi
+        triggerSendEffects();
+        
         // Analyser le type de question
         const questionType = analyzeQuestion(message);
         updateStats(questionType);
@@ -212,12 +213,77 @@ $(document).ready(function () {
                     updateStats(responseType);
                     changeMood(responseType);
                     triggerReaction(responseType);
+                    
+                    // Effets aléatoires sur la réponse
+                    if (Math.random() > 0.8) {
+                        randomFunEffect();
+                    }
                 },
                 error: function () {
                     appendMessage('bot', "Désolé, une erreur s'est produite. Mon cerveau a peut-être besoin d'une mise à jour...", 'error');
                 }
             });
         }, 800 + Math.random() * 2000);
+    }
+    
+    // ========== EFFETS AMUSANTS ==========
+    function triggerSendEffects() {
+        // Animation du bouton d'envoi
+        $('#send-btn').addClass('shake');
+        setTimeout(() => $('#send-btn').removeClass('shake'), 500);
+        
+        // Effet sur l'input
+        $('.input-wrapper').addClass('shake');
+        setTimeout(() => $('.input-wrapper').removeClass('shake'), 300);
+        
+        // Confettis occasionnels
+        if (Math.random() > 0.85) {
+            triggerConfetti();
+        }
+    }
+    
+    function randomFunEffect() {
+        const effects = [
+            () => {
+                // Tous les messages tremblent
+                $('.message').addClass('shake');
+                setTimeout(() => $('.message').removeClass('shake'), 1000);
+            },
+            () => {
+                // Rotation de l'avatar
+                $('#bot-avatar-container').css('transform', 'rotate(360deg)');
+                setTimeout(() => $('#bot-avatar-container').css('transform', ''), 1000);
+            },
+            () => {
+                // Confettis
+                triggerConfetti();
+            },
+            () => {
+                // Tous les boutons pulsent
+                $('.icon-btn').each(function(index) {
+                    setTimeout(() => {
+                        $(this).css('transform', 'scale(1.3)');
+                        setTimeout(() => $(this).css('transform', ''), 300);
+                    }, index * 100);
+                });
+            },
+            () => {
+                // Le header change de couleur rapidement
+                const colors = ['#ff00ff', '#00ffff', '#ffff00', '#ff0000'];
+                let i = 0;
+                const interval = setInterval(() => {
+                    $('.app-header').css('background', colors[i % colors.length]);
+                    i++;
+                    if (i >= 10) {
+                        clearInterval(interval);
+                        $('.app-header').css('background', '');
+                    }
+                }, 100);
+            }
+        ];
+        
+        const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+        randomEffect();
     }
     
     // ========== ANALYSE DES QUESTIONS ==========
@@ -293,6 +359,15 @@ $(document).ready(function () {
         // Mettre à jour l'avatar du message
         if (sender === 'bot') {
             $('#message-avatar').text(botConfig.avatar);
+        }
+        
+        // Effets aléatoires sur les nouveaux messages
+        if (Math.random() > 0.7) {
+            const newMessage = $('#chat-box .message').last();
+            if (Math.random() > 0.5) {
+                newMessage.addClass('shake');
+                setTimeout(() => newMessage.removeClass('shake'), 500);
+            }
         }
     }
     
@@ -486,20 +561,6 @@ $(document).ready(function () {
         }
     }
     
-    // ========== MODE PHILOSOPHE ==========
-    function togglePhilosopherMode() {
-        isPhilosopherMode = !isPhilosopherMode;
-        if (isPhilosopherMode) {
-            $('body').addClass('philosopher-mode');
-            $('#philosopher-mode-btn').addClass('active');
-            toggleParticles();
-            appendMessage('bot', "🧙 Mode Philosophe du Dimanche activé ! Laissez-moi vous parler de l'existence des nuages...", 'philosophie');
-        } else {
-            $('body').removeClass('philosopher-mode');
-            $('#philosopher-mode-btn').removeClass('active');
-        }
-    }
-    
     // ========== PERSONNALISATION ==========
     function saveSettings() {
         botConfig.name = $('#bot-name-input').val() || 'Chat-bruti';
@@ -632,10 +693,41 @@ $(document).ready(function () {
         if (isDarkTheme) {
             $('body').removeClass('light-theme');
             $('#theme-btn').text('🌙');
+            // Retour au mode normal
+            $('.app-container').css('transform', '');
         } else {
             $('body').addClass('light-theme');
             $('#theme-btn').text('☀️');
+            // Effets supplémentaires pour le mode jour absurde
+            triggerChaosMode();
+            appendMessage('bot', "🌞 MODE JOUR ACTIVÉ ! Attention, l'interface devient complètement folle ! 🌈✨💫", 'absurde');
         }
+    }
+    
+    function triggerChaosMode() {
+        // Ajouter des confettis
+        triggerConfetti();
+        
+        // Faire trembler tous les éléments
+        $('.message').each(function(index) {
+            setTimeout(() => {
+                $(this).addClass('shake');
+                setTimeout(() => {
+                    $(this).removeClass('shake');
+                }, 500);
+            }, index * 100);
+        });
+        
+        // Animation sur le header
+        $('.app-header').addClass('shake');
+        setTimeout(() => {
+            $('.app-header').removeClass('shake');
+        }, 1000);
+        
+        // Message spécial dans le chat
+        setTimeout(() => {
+            appendMessage('bot', "💡 Astuce : En mode jour, tout bouge ! C'est normal... enfin, presque ! 😵‍💫", 'absurde');
+        }, 2000);
     }
     
     // ========== PARTICULES ==========

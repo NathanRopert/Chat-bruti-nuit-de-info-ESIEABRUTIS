@@ -34,16 +34,6 @@ body {
     transition: background 0.3s ease;
 }
 
-body.philosopher-mode {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 50%, #1e293b 100%);
-    background-size: 400% 400%;
-    animation: gradientShift 15s ease infinite;
-}
-
-@keyframes gradientShift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-}
 
 /* Container principal */
 .app-container {
@@ -63,6 +53,7 @@ body.philosopher-mode {
     position: sticky;
     top: 0;
     z-index: 100;
+    min-height: 80px;
 }
 
 .header-content {
@@ -71,6 +62,7 @@ body.philosopher-mode {
     align-items: center;
     max-width: 1400px;
     margin: 0 auto;
+    gap: 1rem;
 }
 
 .logo-section {
@@ -136,6 +128,9 @@ body.philosopher-mode {
 .header-actions {
     display: flex;
     gap: 0.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+    overflow: hidden;
 }
 
 .icon-btn {
@@ -144,6 +139,7 @@ body.philosopher-mode {
     color: var(--text-secondary);
     width: 40px;
     height: 40px;
+    min-width: 40px;
     border-radius: 8px;
     cursor: pointer;
     display: flex;
@@ -151,6 +147,7 @@ body.philosopher-mode {
     justify-content: center;
     transition: all 0.2s ease;
     font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 .icon-btn:hover {
@@ -962,20 +959,294 @@ body.philosopher-mode {
     animation: rainbow 2s linear infinite;
 }
 
-/* Mode sombre/clair */
+/* Mode jour - Complètement absurde et inutilisable */
 body.light-theme {
-    --background: #f8fafc;
-    --surface: #ffffff;
-    --surface-light: #f1f5f9;
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --border-color: #e2e8f0;
+    --background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+    --background-size: 400% 400%;
+    --surface: rgba(255, 192, 203, 0.9);
+    --surface-light: rgba(255, 255, 0, 0.8);
+    --text-primary: #ff00ff;
+    --text-secondary: #00ff00;
+    --border-color: #ff00ff;
+    --primary-color: #ff00ff;
+    --primary-dark: #ff0080;
+    --secondary-color: #00ffff;
+    --success: #00ff00;
+    --warning: #ffff00;
+    --error: #ff0000;
+    animation: chaoticBackground 3s ease infinite;
+    font-family: 'Comic Sans MS', 'Papyrus', cursive !important;
+}
+
+@keyframes chaoticBackground {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body.light-theme {
+    background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+    background-size: 400% 400%;
+    animation: chaoticBackground 3s ease infinite;
+}
+
+body.light-theme .app-container {
+    transform: rotate(1deg);
+    animation: wobble 5s ease-in-out infinite;
+}
+
+@keyframes wobble {
+    0%, 100% { transform: rotate(1deg); }
+    25% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+    75% { transform: rotate(-1deg); }
+}
+
+body.light-theme .app-header {
+    background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+    background-size: 200% 100%;
+    animation: slideColors 2s linear infinite;
+    border: 5px dashed #00ff00;
+    box-shadow: 10px 10px 0px #ff00ff;
+}
+
+@keyframes slideColors {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+body.light-theme .logo-text h1 {
+    font-family: 'Comic Sans MS', cursive !important;
+    text-shadow: 3px 3px 0px #00ffff, -3px -3px 0px #ffff00;
+    animation: rainbowText 2s linear infinite;
+    transform: rotate(-2deg);
+}
+
+@keyframes rainbowText {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+body.light-theme .message {
+    animation: messageFloat 3s ease-in-out infinite;
+}
+
+@keyframes messageFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(1deg); }
+}
+
+body.light-theme .message-text {
+    background: linear-gradient(135deg, #ffff00, #00ffff) !important;
+    border: 3px solid #ff00ff !important;
+    box-shadow: 5px 5px 0px #00ff00, -5px -5px 0px #ff00ff;
+    animation: pulseBorder 2s ease-in-out infinite;
+    transform: rotate(0.5deg);
+}
+
+@keyframes pulseBorder {
+    0%, 100% { border-width: 3px; }
+    50% { border-width: 5px; }
+}
+
+body.light-theme .message.user .message-text {
+    background: linear-gradient(135deg, #ff00ff, #ffff00) !important;
+    transform: rotate(-0.5deg);
+}
+
+body.light-theme .input-wrapper {
+    background: linear-gradient(90deg, #ffff00, #00ffff, #ff00ff, #ffff00);
+    background-size: 300% 100%;
+    animation: slideColors 3s linear infinite;
+    border: 4px dashed #ff00ff;
+    box-shadow: 0 0 20px #00ffff;
+    transform: rotate(-1deg);
+}
+
+body.light-theme #user-input {
+    color: #ff00ff !important;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px #00ffff;
+}
+
+body.light-theme #user-input::placeholder {
+    color: #00ff00 !important;
+    font-weight: bold;
+}
+
+body.light-theme .send-btn {
+    background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
+    animation: spinButton 2s linear infinite;
+    box-shadow: 0 0 20px #ffff00;
+}
+
+@keyframes spinButton {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+body.light-theme .send-btn:hover {
+    animation: spinButton 0.5s linear infinite;
+    transform: scale(1.2);
+}
+
+body.light-theme .icon-btn {
+    border: 3px solid #ff00ff;
+    animation: iconPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+body.light-theme .icon-btn:hover {
+    background: #ffff00 !important;
+    color: #ff00ff !important;
+    animation: iconSpin 0.5s linear infinite;
+}
+
+@keyframes iconSpin {
+    0% { transform: rotate(0deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1.1); }
+}
+
+body.light-theme .chat-messages {
+    background: rgba(255, 255, 0, 0.1);
+    border: 2px dashed #ff00ff;
+}
+
+body.light-theme .stats-sidebar {
+    background: linear-gradient(135deg, #ffff00, #00ffff);
+    border-left: 5px solid #ff00ff;
+    box-shadow: -10px 0px 20px #ff00ff;
+}
+
+body.light-theme .stat-value {
+    color: #ff00ff !important;
+    text-shadow: 2px 2px 0px #00ffff;
+    animation: numberBounce 1s ease-in-out infinite;
+}
+
+@keyframes numberBounce {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+body.light-theme .progress-fill {
+    background: linear-gradient(90deg, #ff00ff, #00ffff, #ffff00, #ff00ff) !important;
+    background-size: 200% 100%;
+    animation: slideColors 2s linear infinite;
+}
+
+body.light-theme .bot-avatar {
+    border: 5px dashed #ff00ff;
+    background: linear-gradient(135deg, #ffff00, #00ffff) !important;
+    box-shadow: 0 0 30px #ff00ff;
+    animation: avatarDance 2s ease-in-out infinite;
+}
+
+@keyframes avatarDance {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-10px) rotate(5deg); }
+    75% { transform: translateY(-10px) rotate(-5deg); }
+}
+
+body.light-theme .avatar-face {
+    background: linear-gradient(135deg, #ff00ff, #00ffff) !important;
+    animation: faceSpin 3s linear infinite;
+}
+
+@keyframes faceSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+body.light-theme .modal-content {
+    background: linear-gradient(135deg, #ffff00, #00ffff) !important;
+    border: 5px solid #ff00ff;
+    box-shadow: 0 0 30px #00ff00;
+    animation: modalShake 0.5s ease-in-out infinite;
+}
+
+@keyframes modalShake {
+    0%, 100% { transform: translateX(0px); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+body.light-theme .quote-text {
+    background: linear-gradient(90deg, #ff00ff, #00ffff) !important;
+    border: 3px dashed #ffff00;
+    color: #000000 !important;
+    font-weight: bold;
+    animation: quoteFloat 2s ease-in-out infinite;
+}
+
+@keyframes quoteFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+body.light-theme * {
+    transition: all 0.1s ease !important;
+}
+
+body.light-theme .welcome-icon {
+    animation: iconChaos 1s ease-in-out infinite;
+}
+
+@keyframes iconChaos {
+    0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+    25% { transform: translateY(-20px) rotate(90deg) scale(1.2); }
+    50% { transform: translateY(0px) rotate(180deg) scale(1); }
+    75% { transform: translateY(-20px) rotate(270deg) scale(1.2); }
+}
+
+body.light-theme .status-dot {
+    animation: dotChaos 0.5s ease-in-out infinite;
+    background: #ff00ff !important;
+    box-shadow: 0 0 10px #00ffff;
+}
+
+@keyframes dotChaos {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.5); opacity: 0.5; }
+}
+
+body.light-theme .badge.unlocked {
+    background: linear-gradient(135deg, #ff00ff, #00ffff, #ffff00) !important;
+    animation: badgeChaos 1s ease-in-out infinite;
+}
+
+@keyframes badgeChaos {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .app-header {
         padding: 1rem;
+    }
+    
+    .header-content {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        order: 3;
+        overflow: hidden;
+    }
+    
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        font-size: 1rem;
     }
 
     .chat-container {
@@ -993,6 +1264,19 @@ body.light-theme {
     .stats-sidebar {
         width: 100%;
         right: -100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .header-actions {
+        gap: 0.4rem;
+    }
+    
+    .icon-btn {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        font-size: 1.1rem;
     }
 }
 
