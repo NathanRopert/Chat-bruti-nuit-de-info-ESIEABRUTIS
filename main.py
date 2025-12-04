@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, jsonify
 import ollama
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 # Le nom exact du modèle
 model_name = "gemma3:270m"

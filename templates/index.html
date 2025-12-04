@@ -5,26 +5,206 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat-bruti - Le Philosophe du Dimanche</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Chat-bruti</h1>
-            <p class="subtitle">L'intelligence artificielle...ment inutile.</p>
+    <div class="app-container" id="app-container">
+        <!-- Header professionnel -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon" id="logo-easter-egg">💼</div>
+                    <div class="logo-text">
+                        <h1 id="bot-name">Chat-bruti</h1>
+                        <span class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span class="status-text" id="mood-text">En ligne</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="philosopher-mode-btn" title="Mode Philosophe">🧙</button>
+                    <button class="icon-btn" id="stats-btn" title="Statistiques">📊</button>
+                    <button class="icon-btn" id="settings-btn" title="Paramètres">⚙️</button>
+                    <button class="icon-btn" id="theme-btn" title="Thème">🌙</button>
+                </div>
+            </div>
         </header>
-        
-        <div id="chat-box">
-            <div class="message bot">
-                <div class="avatar">🤪</div>
-                <div class="text">Salutations, mortel. Je suis Chat-bruti. Pose-moi une question, que je puisse l'ignorer avec panache.</div>
+
+        <!-- Sidebar pour statistiques -->
+        <aside class="stats-sidebar" id="stats-sidebar">
+            <div class="stats-header">
+                <h3>📊 Statistiques Absurdes</h3>
+                <button class="close-sidebar" id="close-stats">×</button>
+            </div>
+            <div class="stats-content">
+                <div class="stat-item">
+                    <span class="stat-label">Questions ignorées</span>
+                    <span class="stat-value" id="stat-ignored">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Sujets détournés</span>
+                    <span class="stat-value" id="stat-detoured">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Digressions philosophiques</span>
+                    <span class="stat-value" id="stat-philosophy">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Réponses complètement à côté</span>
+                    <span class="stat-value" id="stat-off-topic">0</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-item">
+                    <span class="stat-label">Niveau de confusion</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="confusion-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Maîtrise du hors-sujet</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="offtopic-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Talent poétique</span>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="poetry-progress" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="badges-section">
+                    <h4>🏆 Badges</h4>
+                    <div class="badges-list" id="badges-list">
+                        <span class="badge locked">Maître de la digression</span>
+                        <span class="badge locked">Roi du hors-sujet</span>
+                        <span class="badge locked">Philosophe confirmé</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Zone de chat principale -->
+        <main class="chat-container">
+            <!-- Avatar animé fixe -->
+            <div class="bot-avatar-container" id="bot-avatar-container">
+                <div class="bot-avatar" id="bot-avatar">
+                    <div class="avatar-face" id="avatar-face">
+                        <div class="eye left-eye"></div>
+                        <div class="eye right-eye"></div>
+                        <div class="mouth" id="avatar-mouth"></div>
+                    </div>
+                    <div class="avatar-name" id="avatar-name-display">Chat-bruti</div>
+                    <div class="avatar-mood" id="avatar-mood">🤔 Philosophe</div>
+                </div>
+            </div>
+
+            <div id="chat-box" class="chat-messages">
+                <div class="welcome-section">
+                    <div class="welcome-icon">🤖</div>
+                    <h2>Bienvenue sur Chat-bruti</h2>
+                    <p>Votre philosophe du dimanche est prêt à vous... ignorer avec panache !</p>
+                </div>
+                <div class="message bot initial-message">
+                    <div class="message-avatar">
+                        <div class="avatar-circle" id="message-avatar">🤔</div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message-text">Salutations, mortel ! Je suis Chat-bruti, philosophe du dimanche et maître de la digression. Pose-moi une question, que je puisse l'ignorer avec élégance !</div>
+                        <div class="message-time">Maintenant</div>
+                        <div class="message-tags">
+                            <span class="tag">Philosophe</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citations aléatoires -->
+            <div class="quote-container" id="quote-container">
+                <div class="quote-text" id="quote-text"></div>
+            </div>
+
+            <!-- Zone de saisie -->
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <button class="attach-btn" id="attach-btn" title="Joindre un fichier">📎</button>
+                    <input type="text" id="user-input" placeholder="Posez une question... (je l'ignorerai)..." autocomplete="off">
+                    <button class="send-btn" id="send-btn" title="Envoyer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+                <div class="input-footer">
+                    <span class="typing-indicator" id="typing-indicator"></span>
+                    <span class="char-count" id="char-count">0 / 2000</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Modale de personnalisation -->
+        <div id="settings-modal" class="easter-modal">
+            <div class="modal-content large-modal">
+                <h2>⚙️ Personnalisation</h2>
+                <div class="settings-section">
+                    <label>Nom du bot :</label>
+                    <input type="text" id="bot-name-input" value="Chat-bruti" maxlength="20">
+                </div>
+                <div class="settings-section">
+                    <label>Personnalité :</label>
+                    <select id="personality-select">
+                        <option value="philosophe">🧙 Philosophe du dimanche</option>
+                        <option value="poete">📝 Poète raté</option>
+                        <option value="scientifique">🔬 Scientifique raté</option>
+                        <option value="confus">🤯 Complètement confus</option>
+                        <option value="dormeur">😴 Dormeur professionnel</option>
+                    </select>
+                </div>
+                <div class="settings-section">
+                    <label>Avatar :</label>
+                    <div class="avatar-options">
+                        <button class="avatar-option active" data-avatar="🤔">🤔</button>
+                        <button class="avatar-option" data-avatar="🧙">🧙</button>
+                        <button class="avatar-option" data-avatar="🤪">🤪</button>
+                        <button class="avatar-option" data-avatar="😴">😴</button>
+                        <button class="avatar-option" data-avatar="🤯">🤯</button>
+                        <button class="avatar-option" data-avatar="🎭">🎭</button>
+                    </div>
+                </div>
+                <div class="settings-actions">
+                    <button class="close-modal" id="save-settings">Enregistrer</button>
+                    <button class="close-modal secondary">Annuler</button>
+                </div>
             </div>
         </div>
 
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Écris quelque chose (je m'en fiche)...">
-            <button id="send-btn">Déranger</button>
+        <!-- Modales easter eggs -->
+        <div id="konami-modal" class="easter-modal">
+            <div class="modal-content">
+                <h2>🎉 Konami Code activé !</h2>
+                <p>Vous avez découvert un easter egg secret !</p>
+                <button class="close-modal">Fermer</button>
+            </div>
         </div>
+
+        <div id="logo-modal" class="easter-modal">
+            <div class="modal-content">
+                <h2>👀 Vous avez cliqué sur le logo !</h2>
+                <p>Félicitations, vous êtes curieux !</p>
+                <button class="close-modal">Fermer</button>
+            </div>
+        </div>
+
+        <!-- Particules pour effet spécial -->
+        <canvas id="particles-canvas"></canvas>
+        
+        <!-- Confettis pour réactions -->
+        <canvas id="confetti-canvas"></canvas>
     </div>
 
     <script src="{{ url_for('static', filename='script.js') }}"></script>
